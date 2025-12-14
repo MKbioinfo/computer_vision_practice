@@ -11,6 +11,7 @@ What it is: SIFT is a powerful algorithm for detecting and describing local feat
 
 Steps:
 Grayscale Conversion: Both the cropped_img and the original_img were converted to grayscale. SIFT primarily operates on grayscale images to simplify calculations and focus on intensity gradients.
+
 Keypoint Detection & Descriptor Computation: SIFT identified unique and distinctive points (keypoints) in both images. For each keypoint, a 128-dimensional descriptor was computed, encapsulating its local appearance.
 
 Result: cropped_img yielded 10 keypoints, and original_img yielded 51 keypoints.
@@ -20,6 +21,7 @@ Purpose: To find correspondences between the keypoints of the two images.
 
 Method:
 Brute-Force Matcher (BFMatcher): A brute-force matcher was used to compare all descriptors from the cropped_img with all descriptors from the original_img.
+
 knnMatch (k-Nearest Neighbors Matching): For each descriptor in the cropped_img, the two closest descriptors in the original_img were found.
 
 Lowe's Ratio Test: This critical filtering step eliminated ambiguous matches. By comparing the distance of the best match to the second-best match (ratio of 0.80), only truly distinctive and robust matches were retained.
@@ -36,6 +38,7 @@ Keypoint Coordinate Extraction: The (x,y) coordinates of the 6 good matches were
 
 cv2.findHomography: This function computed the homography matrix (M).
 RANSAC (Random Sample Consensus): Integrated into findHomography, RANSAC is an algorithm used to robustly estimate model parameters (like the homography matrix) from a set of observed data containing outliers. It ensures that only consistent matches contribute to the final transformation, making the estimation reliable even with some incorrect matches.
+
 Result: A 3x3 homography matrix M was successfully computed, along with a mask indicating the inlier matches.
 
 D. Object Localization and Visualization
@@ -45,6 +48,9 @@ Steps:
 
 Define Cropped Image Corners: The four corner coordinates of the cropped_img were defined.
 Perspective Transform: The computed homography matrix M was used with cv2.perspectiveTransform to transform these four corner points to their corresponding positions in the original_img's coordinate system.
+
 Draw Bounding Box: A quadrilateral (bounding box) was drawn on the original_img using these transformed corner points.
+
 Result: A green bounding box was accurately drawn around the detected cell in the original image, visually confirming the successful localization.
+
 Additional Note: To test robustness, the original image was rotated 90°, and SIFT was able to successfully detect and localize the cell even in the rotated image, demonstrating the algorithm’s rotation invariance
